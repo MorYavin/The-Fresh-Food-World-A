@@ -1,0 +1,10 @@
+Recipt for order made on 2020-07-05 for a total of 21.99 GBP
+ 
+    +------------------+--------------+--------------------+
+    |Product           |Quantity      |Total Product Price |
+    +------------------+--------------+--------------------+
+     ice tea                2             2
+    filet mignon steak                1             19.99
+   
+
+    

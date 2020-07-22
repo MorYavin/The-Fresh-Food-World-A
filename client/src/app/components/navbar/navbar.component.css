@@ -1,0 +1,18 @@
+#navbarLogo{
+    width:70px;
+    height: 55px;
+    float: left;
+    
+}
+ #logoDiv>a{
+   width: auto;  
+   text-align: left;
+ }
+ #hello{
+     width: 160px;
+ }
+
+#mailImg,#phoneImg{
+  height: 20px;
+  width: 25px;
+}

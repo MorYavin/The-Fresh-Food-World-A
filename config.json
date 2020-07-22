@@ -1,0 +1,13 @@
+{
+    "port": 3000,
+    "production": false,
+    "mongodb": {
+          "URI": "mongodb+srv://Mory06:Momo2018@cluster0.pbpll.mongodb.net/supermarketdb?retryWrites=true&w=majority",
+      "options": {
+        "useNewUrlParser": true,
+        "useUnifiedTopology": true,
+        "useCreateIndex": true
+      }
+    }
+  }
+  

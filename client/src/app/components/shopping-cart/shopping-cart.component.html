@@ -1,0 +1,58 @@
+<div *ngIf="user">
+  <h5 class="text-center text-dark mt-2">
+    {{ user.role==="user" ? "My Shopping Cart" : "Administrator Panel" }}
+    <button
+      *ngIf="(this.cartStatus === 'active'&& router.url === '/main')"
+      (click)="clearCart()"
+     id="trashBtn" data-tooltip="clear cart"
+    >
+    <img id="trashImg" src="/assets/images/trash.png">
+    </button>
+    <hr />
+  </h5>
+<div class="px-1">
+  <input
+    type="text"
+    name="search"
+    class="form-control"
+    placeholder="Search products in your cart"
+    [(ngModel)]="filteredStatus"
+  />
+</div>
+<!-- User section -->
+<div *ngIf="this.cartStatus === 'active'" class="row p-1">
+  <div class="col">
+    <ul class="list-group">
+      <li *ngFor="let p of this.itemsInCart" class="list-group-item bg-light">
+        <div class="d-flex">
+          <div class="mr-auto"><span [innerHTML]="p.products?.productName|highlight :filteredStatus" >{{p.products?.productName}}</span></div>
+          <div>
+            <span class="badge badge mr-1">Quantity: {{ p.quantity }}</span>
+          </div>
+          <div>
+            <span class="badge badge mr-1">Price: {{p.totalCartValue | currency: "GBP":"symbol":"1.2-2" }}</span>
+          </div>
+          <span *ngIf="router.url === '/main'" > <button (click)="increaseAmount(p.productId)" class="btn badge badge-danger text-right">
+            +
+        </button></span>&nbsp;
+           <span *ngIf="router.url === '/main'"> <button (click)="removeProductFromCart(p._id)" class="btn badge badge-danger text-right">
+                x
+            </button></span>&nbsp;
+           <span *ngIf="router.url === '/main'"> <button (click)="decreaseAmount(p.productId)" class="btn badge badge-danger text-right">
+                -
+            </button></span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- cart total -->
+<div class="row p-1">
+  <div class="col">
+    <span class="btn btn-dark disabled">Total: {{ this.totalCartValue | currency: "GBP":"symbol":"1.2-2" }}</span>
+  </div>
+  <!-- order -->
+  <div *ngIf="(this.cartStatus === 'active'&& router.url === '/main')" class="col text-right">
+    <button routerLink="/order" class="btn btn-danger" [disabled]="this.itemsInCart.length==0">Place Order</button>
+  </div>
+</div>

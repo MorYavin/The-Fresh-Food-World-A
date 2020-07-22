@@ -1,0 +1,98 @@
+<div class="input-group mb-2 mx-auto" style="width:60%">
+    <input type="text" #searchProducts class="form-control" [(ngModel)]="term" placeholder="Search for products..." />
+    <div class="input-group-append">
+        <button (click)="onSearch(searchProducts.value)" class="btn" id="searchBtn" required>  </button>
+    </div>
+</div>
+<h5>Browse by category:</h5>
+<div class="d-flex flex-wrap justify-content-center p-1 bg-dark">
+    <button id="categoryBtn" *ngFor="let category of categories" (click)="selectCategory(category._id)"
+        type="button" class="px-2 m-2 btn btn-sm">
+        {{ category?.categoryName }}
+    </button><br />
+    <button *ngIf='this.categorySelected==true' type="button" (click)="showAllProducts()" class="px-2 m-2 btn btn-sm" id="backToAllProdBtn">
+    Back to all products
+    </button>
+</div>  
+<div *ngIf="user" >
+    <div *ngIf="products" class="d-flex flex-wrap justify-content-center border">
+        <div *ngIf="products.length == 0" class="text-center m-4">
+            <h3>No products available at the moment</h3>
+        </div>
+
+
+        <div *ngFor="let product of products | filter:term"  class="card text-center m-1"
+            style="width:200px" >
+            <h6 class="card-title">{{ product.productName }}</h6> 
+            <small>Price: {{ product.productPrice | currency: "GBP":"symbol":"1.2-2" }}</small>
+            <img src="/assets/images/{{product.productImage}}" [alt]="product.productName" class="imageDiv" />            
+            <button
+            *ngIf="user.role==='user'"
+            id="openModalBtn"
+            type="button"
+            class="btn"
+            data-toggle="modal"
+            data-target="#myModal"
+            (click)="open(mymodal)"
+          >
+           Add Product
+          </button>
+          <!---------Add Product Modal----------->
+          <ng-template #mymodal let-modal>
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">{{ product.productName }}</h4>
+                  <button type="button" id="closeBtn" data-dismiss="modal" (click)="modal.dismiss('Cross click')">&times;</button>
+                </div>
+                <form>
+                  <div class="modal-body d-flex flex-row justify-content-around align-content-center align-items-center">
+                    <div class="p-1" style="width:100px">
+                      <img src="/assets/images/{{product.productImage}}" [alt]="product.productName" id="thumbImg"/>
+                    </div>
+                    <div class="p-1">
+                      <span>{{ ((product.productCategory === "5ecd398526087cfa11807f1e")||(product.productCategory === "5ee5bc5aaa76c46dc56655e7") )? "Price per 1kg" : 'Price per unit' }}</span>
+                      {{ product.productPrice | currency: "GBP":"symbol":"1.2-2" }}
+                    </div>
+                    <div class="p-1">
+                      <h6>Quantity</h6>
+                      <input
+                        id="quantity"
+                        [(ngModel)]="product.productQuantity"
+                        name="quantity"
+                        type="number"
+                        placeholder="0"
+                        min="0"
+                        class="form-control quantity-input"
+                          />
+                    </div>
+                    <div class="p-1">
+                      <h6>Total Price</h6>
+                      {{ product.productPrice * product.productQuantity | currency: "GBP":"symbol":"1.2-2" }}
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" (click)="addProductToCart(product)" class="btn" id="addBtn" data-dismiss="modal">
+                    Add to Cart
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </ng-template>
+        
+        </div>
+      </div>
+    
+
+         
+
+
+      
+      
+      
+    </div>
+        
+            <!-- <div class="shoppingCart">
+                <app-shopping-cart></app-shopping-cart>
+            </div> -->

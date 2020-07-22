@@ -1,0 +1,89 @@
+<div class="row mt-2">
+  <div class="mr-2 p-2">
+    <button data-tooltip="hide/show cart" id="cartBtn"><img id="toggleCartImg" src="/assets/images/cart.png"
+        (click)="toggleCart()" />
+    </button>
+    <div *ngIf="display" class="col-md card m-2 p-1" [ngStyle]="{ display: display }">
+      <app-shopping-cart></app-shopping-cart>
+    </div>
+    <button routerLink="/main" class="btn btn-dark">Back to products</button>
+  </div>
+
+
+  <div class="col-md card m-2 p-1">
+    <div class="card bg-light">
+      <div class="card-header bg-dark text-white">Order Details</div>
+      <div class="card-body">
+        <form #orderForm="ngForm">
+          <span>Shipping Details</span>
+          <hr />
+          <!-- city -->
+          <div class="form-group">
+            <label for="city">Select city:</label>
+            <select type="text" name="city" class="form-control" id="city" [(ngModel)]="order.cityForDelivery"
+              [value]="this.userCity" #city="ngModel" required [ngClass]="{ 'is-invalid': city.errors && city.touched }"
+              (dblclick)="getCity(orderForm)">
+              <option [ngValue]="undefined" disabled>Double click to recieve your previously saved city</option>
+              <option *ngFor="let city of cities">{{ city }}</option>
+            </select>
+            <div [hidden]="!city.errors?.required" class="invalid-feedback">City name is required</div>
+
+          </div>
+          <!-- street -->
+          <div class="form-group">
+            <label for="street">Street:</label>
+            <input (dblclick)="getAddress(orderForm)" [value]="this.userAddress" type="text" name="street"
+              class="form-control" id="street" [ngClass]="{ 'is-invalid': street.errors && street.touched}"
+              [(ngModel)]="order.streetForDelivery" placeholder="Double click to recieve your previously saved address"
+              #street="ngModel" minlength="2" required />
+            <div [hidden]="!street.errors?.required " class="invalid-feedback">Street is required</div>
+            <div [hidden]="!street.errors?.minlength" class="invalid-feedback">Address must be at least 2 characters
+            </div>
+          </div>
+          <!-- shipping date -->
+          <div class="form-group">
+            <label for="shipping date">Shipping Date:</label>
+            <input type="date" name="shipping date" class="form-control" id="shipping date"
+              [ngClass]="{ 'is-invalid': ship.errors && ship.touched }" [(ngModel)]="order.dateOfDelivery"
+              #ship="ngModel" [min]="getCurrentDate()" (ngModelChange)='getAllOrders()' required />
+            <div [hidden]="!street.errors?.required" class="invalid-feedback">Shipping date is required</div>
+          </div>
+          <span>Payment Details</span>
+          <hr />
+          <!-- credit card -->
+          <div class="form-group">
+            <label for="credit">Credit Card:</label>
+            <input type="text" name="credit" class="form-control" id="credit"
+              [ngClass]="{ 'is-invalid': credit.errors && credit.touched }" [(ngModel)]="order.creditCardDigits"
+              #credit="ngModel" placeholder="Enter credit card number" pattern=^([0-9]{4}[\s-]?){3}([0-9]{4})$
+              required />
+            <div [hidden]="!credit.errors?.required && credit.touched" class="invalid-feedback">Credit card number is
+              required</div>
+            <div [hidden]="!credit.errors?.pattern && credit.touched" class="invalid-feedback">Credit card number has to
+              be 16 digits long</div>
+          </div>
+          <!-- submit -->
+          <button type="submit" class="btn btn-dark" [disabled]="this.dateTaken==true || !orderForm.valid"
+            (click)="placeOrder()">Place Order</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-modal id="confirmationModal">
+  <div class="modal-header"><img id="modalLogo" src="/assets/images/wheatlogo.png" />
+    <h4 class="modal-title" id="modal-basic-title">Thank you for your order</h4>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class=" btn btn-dark" (click)="receiptDownload(this.filePath)">download receipt</button>
+    <button type="button" class=" btn btn-light" (click)="finishAndGoHome()">Finish and go back to home page</button>
+  </div>
+  <button type="button" id="closeBtn" aria-label="Close" [hidden]="true" (click)="modal.dismiss('Cross click')">
+  </button>
+</ng-template>
+
+<button class="btn btn-lg btn-outline-primary" id="openModalBtn" [hidden]="true" (click)="open(content)">Launch demo
+  modal</button>
+
+<hr>

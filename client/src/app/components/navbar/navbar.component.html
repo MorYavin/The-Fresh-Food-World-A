@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-sm navbar-light " style="background-color: #aae7c3;">
+  <div class="container-fluid" id="logoDiv">
+    <a class="navbar-brand" routerLink="" routerLinkActive="active">
+      <img id="navbarLogo" src="/assets/images/wheatlogo.png">
+      <h4>The Fresh Food World</h4>
+    </a>
+  </div>
+  <div id="rightSideNav">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile-nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="navBar" class="collapse navbar-collapse" id="mobile-nav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link disabled" href="#" ><span class="badge badge-none">
+            <img id="phoneImg" src="/assets/images/phone.png">  1800-20-30-40</span></a> </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="mailto:TheFreshFoodWorld@gmail.com" routerLinkActive="active"><span
+              class="badge badge-none"><img id="mailImg" src="/assets/images/email.png"> TheFreshFoodWorld@gmail.com</span></a> </li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <li class="nav-item" id="hello">
+          <a class="nav-link" *ngIf='!user'>
+            Hello guest! </a>
+          <a class="nav-link" *ngIf='user'>
+            Hello, {{user.firstName}}! </a>
+        </li>
+        <li class="nav-item">
+          <a *ngIf="!user" class="nav-link" routerLink="/register" routerLinkActive="active">
+            Register
+          </a> </li>
+        <li class="nav-item">
+          <a *ngIf="user" class="nav-link" routerLink="" (click)="logout()" >
+            Logout
+          </a> </li>
+      </ul>
+    </div>
+  </div>
+</nav>

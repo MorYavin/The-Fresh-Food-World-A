@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"supermarketdb.orders"}],"uuid":"9fc733adef7c48eeb08659228409f63b"}

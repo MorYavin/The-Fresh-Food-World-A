@@ -1,0 +1,15 @@
+User login details:
+
+Admin: 
+moradmin123@gmail.com
+moradmin123
+
+-----------------------
+User that has an order history and can start a new purchase:
+taly@gmail.com
+taly1234
+
+-----------------------
+User that doesn't have an order history but has a pending cart:
+guyy@gmail.com
+guyy1234

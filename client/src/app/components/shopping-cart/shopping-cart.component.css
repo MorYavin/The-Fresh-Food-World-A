@@ -1,0 +1,26 @@
+.list-group{
+    text-align: center;
+    font-size: large;
+}
+#trashBtn {
+    height: 30px;
+    width: 30px;
+    background-color: white;
+    border: none;
+    float: left;
+}
+#trashImg {
+    height: 30px;
+    width: 30px;
+}
+
+#trashBtn:hover:after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 8%;
+    top:10%;
+    margin-left: 5px;
+    background:white;
+    font-size: small;
+
+  }

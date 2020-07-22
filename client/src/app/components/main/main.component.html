@@ -1,0 +1,12 @@
+<div class="row mt-1">
+  <div class="mr-2 p-1">
+    <button data-tooltip="hide/show cart" id="cartBtn"><img id="toggleCartImg" src="/assets/images/cart.png" (click)="toggleCart()"/>
+    </button>
+    <!-- Left side - Shopping Cart -->
+    <div *ngIf="display" class="col-md card m-2 p-1" [ngStyle]="{ display: display }">
+      <app-shopping-cart></app-shopping-cart>
+    </div>
+</div>
+<!-- Main - products -->
+<div class="col-md bg-light p-2"><app-products ></app-products></div>
+</div>

@@ -1,0 +1,14 @@
+html, body {
+    height:100%;
+    padding: 0px;
+    margin: 0px;
+    font-size: x-large; 
+    text-align: center;
+    font-family: sans-serif;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+a {
+    color:rgb(87, 87, 88);
+}

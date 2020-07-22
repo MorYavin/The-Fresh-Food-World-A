@@ -1,0 +1,11 @@
+Recipt for order made on 2020-07-05 
+ 
+    +------------------+--------------+--------------------+
+    |Product           |Quantity      |Total Product Price |
+    +------------------+--------------+--------------------+
+     whole chicken                1             20
+    orange juice                1             1.2
+    chocolate muffins                1             1.2
+   
+
+    

@@ -1,0 +1,120 @@
+<div class="row">
+  <!-- Login section - Left -->
+  <div class="col-md border bg-light" *ngIf="!user">
+    <div class="container card bg-light p-2 my-2">
+      <form #UserLoginForm='ngForm'>
+        <p>Login</p>
+        <div class="form-group">
+          <input type="email" name="email" class="form-control" placeholder="Email" [(ngModel)]='loginForm.email'
+            #email="ngModel" required [ngClass]="{ 'is-invalid': email.errors && email.touched }" class="form-control"
+            pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" />
+          <div [hidden]="!email.errors?.required" class="invalid-feedback">Email is required</div>
+          <div [hidden]="!email.errors?.pattern" class="invalid-feedback">Email is not valid</div>
+        </div>
+        <div class="form-group">
+          <input type="password" name="password" [ngClass]="{ 'is-invalid': password.errors && password.touched }"
+            class="form-control" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" placeholder="Password"
+            [(ngModel)]='loginForm.password' #password="ngModel" required />
+          <div [hidden]="!password.errors?.required" class="invalid-feedback">Password is required</div>
+          <div [hidden]="!password.errors?.pattern" class="invalid-feedback">
+            Password must be at least 8 characters long and contain at least one number and one letter
+          </div>
+        </div>
+        <button type="button" [disabled]="!UserLoginForm.valid" (click)='login()'
+          class="btn btn-success custom-btn">Login</button>
+      </form><br />
+      <a id="register" href="/register">Don't have an account? Register here</a>
+    </div>
+  </div>
+  <!-- About section - Middle -->
+  <div class="col-md border bg-light">
+    <p class="m-4">
+      The Fresh Food World is the destination for everything fresh. An upscale gourmet supermarket with a unique online
+      shopping experience!
+    </p>
+    <p class="text-center">
+      <button class="btn btn-success custom-btn" routerLink="/main">Broswe Products</button>
+    </p>
+    <div id="loggedInImage" *ngIf="user">
+      <img id="groceries" src="assets/images/groceries.jpg">
+    </div>
+  </div>
+  <div id="siteStatsDiv" class="col-md p-4">
+
+  <!-- Stats section - Right -->
+    <div class="text-center text-white border rounded p-1 mx-7 my-2">
+      We have a variety of
+      <span><strong>{{ productsTotalSum }}</strong></span> products in our store for you to browse!
+      <hr>
+      <span><strong>{{ ordersTotal }}</strong></span>
+      orders have been purchased online recenetly!
+    </div>
+    <div *ngIf="!user && isLoggedIn" class="spinner-border text-danger" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div *ngIf="user">
+      <div id="AdminYellowBox" class="text-center border rounded p-1 mx-7" *ngIf='user.role==="admin"'>
+        <button class="btn" routerLink="/admin"> Go to Admin control panel</button>
+      </div>
+    </div>
+    <div *ngIf='user && user.role==="user"' id="yellowBox" class="text-center border rounded p-1 mx-7">
+      <div *ngIf="this.userLastOrder && this.userLastOrder!=='none'">
+        <p>Your last order was on {{this.userLastOrder}}</p>
+        <!-- view last purchase -->
+        <button *ngIf="userLastOrder!=='none'" type="button" (click)="showLastOrder(this.userLastOrderId)"
+          class="btn btn-dark mb-2" data-toggle="collapse" data-target="#demo">
+          View Last Order
+        </button>
+        <hr>
+      </div>
+      <div *ngIf="user && !cartStatus" class="spinner-border text-dark" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div *ngIf=" (this.cartStatus == 'active')  && (this.cartIsEmpty==true)">
+        <p>Your cart is empty, Let's start shopping!</p>
+        <button id="startShopping" class="btn btn-success mb-2" routerLink="/main">Start
+          Shopping</button>
+      </div>
+      <div *ngIf="(cartStatus == 'active') && (this.cartIsEmpty!=true) && (this.cartStatusPending==true)">
+        <p>
+          You have a pending cart from {{ this.dateCreated}}
+        </p>
+        <p>for total amount of {{ this.totalCartValue | currency: "GBP":"symbol":"1.2-2" }}</p>
+        <button id="continueShopping" class="btn btn-success mb-2" routerLink="/main">Continue
+          Shopping</button>
+      </div>
+    </div>
+    <br />
+    <button id="openModalBtn" [hidden]="true" (click)="this.open(content)"></button>
+    <ng-template #content let-modal id="lastOrderModal">
+      <div class="modal-header"><img id="modalLogo" src="/assets/images/wheatlogo.png" />
+        <h4 class="modal-title" id="modal-basic-title">This is your last order from <br>{{userLastOrder}}</h4><br />
+        <button type="button" class="btn" id="closeBtn" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          x</button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of lastOrderItems">
+              <td>{{ item.productName }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.totalCartValue | currency: "GBP":"symbol":"1.2-2" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer" id="modalFooter">
+        <h6>For total amount of: {{ this.lastOrderTotal | currency: "GBP":"symbol":"1.2-2" }}</h6>
+      </div>
+    </ng-template>
+  </div>
+</div>
+<div *ngIf="!user" class="row row-eq-height" id="bottomDiv">
+</div>

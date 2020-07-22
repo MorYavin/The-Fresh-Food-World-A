@@ -1,0 +1,210 @@
+<div class="row mt-1">
+  <div class="mr-2 p-1">
+    <div *ngIf='display==="block"' class="col-md card m-2 p-1" [ngStyle]="{ display: display }">
+      <form #editForm="ngForm" [ngStyle]="{display:display}">
+
+        <!-- product name -->
+        <div class="form-group">
+          <input type="text" name="productName" class="form-control" id="productName" [(ngModel)]="product.productName"
+            ngModel [ngClass]="{ 'is-invalid': productName.errors && productName.touched }" #productName="ngModel"
+            placeholder="Product Name" minlength="2" maxlength='20' required />
+        </div>
+        <div [hidden]="!productName.errors?.required" class="invalid-feedback">Product name is required</div>
+        <div [hidden]="!productName.errors?.minlength" class="invalid-feedback"> Product name must be at least 2
+          characters long
+        </div>
+        <!-- image -->
+        <div class="form-group">
+          <h6><small class="text-muted">Please upload only files of type .JPEG, .JPG, or .PNG</small></h6>
+          <input name="productImage" type="file" (input)='updateImg($event)' style="display:none" accept="image/*"
+            multiple="multiple" #pickedFile required />
+          <button type="button" (click)="pickedFile.click()" class="btn btn-dark">
+            Choose Image
+          </button>
+        </div>
+        <!-- price -->
+        <div class="form-group">
+          <input type="number" name="price" class="form-control" id="price" [(ngModel)]="product.productPrice" ngModel
+            [ngClass]="{ 'is-invalid': productPrice.errors && productPrice.touched }"
+            pattern='^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$' #productPrice="ngModel" placeholder="Price" />
+        </div>
+        <div [hidden]="!productPrice.errors?.required" class="invalid-feedback">product price is required</div>
+        <div [hidden]="!productPrice.errors?.pattern" class="invalid-feedback">product price can not be smaller/equal to
+          zero and can only contain up to 2 decimal places</div>
+        <!-- category -->
+        <div class="form-group">
+          {{ selectedCategory }}
+          <select type="text" name="category" class="form-control" id="category" [(ngModel)]="product.productCategory"
+            ngModel [ngClass]="{ 'is-invalid': productCategory.errors && productCategory.touched }"
+            #productCategory="ngModel">
+            <option *ngFor="let category of categories" value="{{category._id}}">{{ category?.categoryName }}</option>
+          </select>
+        </div>
+        <div [hidden]="!productCategory.errors?.required" class="invalid-feedback">Product category is required</div>
+
+        <button [disabled]="!editForm.valid" type="submit" class="btn btn-success" (click)='editProduct()'>Save
+          Changes</button>&nbsp;
+        <button type="submit" class="btn btn-danger" (click)='cancelEdit()'>Cancel</button>
+      </form>
+    </div>
+  </div>
+  <div class="col-md bg-light p-2">
+
+    <div class="input-group mb-2 mx-auto" style="width:60%">
+      <input type="text" #searchProducts class="form-control" [(ngModel)]="term" placeholder="Search for products..." />
+      <div class="input-group-append">
+        <button (click)="onSearch(searchProducts.value)" class="btn" id="searchBtn" required> </button>
+      </div>
+      <button class="btn" id="addBtn" (click)="open(content)">Add a new product</button>
+    </div>
+    <div class="d-flex flex-wrap justify-content-center p-1 bg-dark">
+      <button id="categoryBtn" *ngFor="let category of categories" (click)="selectCategory(category._id)" type="button"
+        class="px-2 m-2 btn btn-sm">
+        {{ category?.categoryName }}
+      </button><br />
+      <button *ngIf='this.categorySelected==true' type="button" (click)="showAllProducts()" class="px-2 m-2 btn btn-sm"
+        id="backToAllProdBtn">
+        Back to all products
+      </button>
+    </div>
+    <div *ngIf="user">
+      <div *ngIf="products" class="d-flex flex-wrap justify-content-center border">
+        <div *ngIf="products.length == 0" class="text-center m-4">
+          <h3>No products available at the moment</h3>
+        </div>
+        <div *ngFor="let product of products | filter:term" class="card text-center m-1" style="width:200px">
+          <h6 class="card-title">{{ product.productName }}</h6>
+          <small>Price: {{ product.productPrice | currency: "GBP":"symbol":"1.2-2" }}</small>
+          <img src="/assets/images/{{product.productImage}}" [alt]="product.productName" class="imageDiv" />
+          <button *ngIf="user.role==='admin'" id="openModalBtn" type="button" class="btn" data-toggle="modal"
+            data-target="#myModal" (click)="toggleEdit(product)">
+            Edit Product
+          </button>
+          <ng-template #mymodal let-modal>
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">{{ product.productName }}</h4>
+                  <button type="button" id="closeBtn" data-dismiss="modal"
+                    (click)="modal.dismiss('Cross click')">&times;</button>
+                </div>
+                <form>
+                  <div
+                    class="modal-body d-flex flex-row justify-content-around align-content-center align-items-center">
+                    <div class="p-1" style="width:100px">
+                      <img src="/assets/images/{{product.productName}}.jpg" [alt]="product.productName" id="thumbImg" />
+                    </div>
+                    <div class="p-1">
+
+                      <span>{{ ((product.productCategory === "5ecd398526087cfa11807f1e")||(product.productCategory === "5ee5bc5aaa76c46dc56655e7") )? "Price per 1kg" : 'Price per unit' }}</span>
+                      {{ product.productPrice | currency: "GBP":"symbol":"1.2-2" }}
+                    </div>
+                    <div class="p-1">
+                      <h6>Quantity</h6>
+                      <input id="quantity" [(ngModel)]="product.productQuantity" name="quantity" type="number"
+                        placeholder="0" min="0" class="form-control quantity-input" />
+                    </div>
+                    <div class="p-1">
+                      <h6>Total Price</h6>
+                      {{ product.productPrice * product.productQuantity | currency: "GBP":"symbol":"1.2-2" }}
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!---------------------------- Add Product Modal ------------------------->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add a new product</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #addProductForm='ngForm'>
+      <div class="form-group">
+        <label for="city">Product Name:</label>
+        <input class="form-control" type="text" id="productNameInput" placeholder="Product Name" name="productName"
+          [ngClass]="{ 'is-invalid': productName.errors && productName.touched }" ngModel #productName="ngModel"
+          minlength='2' maxlength='20' [(ngModel)]="product.productName" required>
+        <div [hidden]="!productName.errors?.required" class="invalid-feedback">Product name is required</div>
+        <div [hidden]="!productName.errors?.minlength" class="invalid-feedback"> Product name must be at least 2
+          characters long
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="price">Product Price:</label>
+        <input type="number" name="productPrice" class="form-control" id="price"
+          [ngClass]="{ 'is-invalid': productPrice.errors && productPrice.touched }" ngModel #productPrice="ngModel"
+          placeholder="Price" pattern='^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$' required
+          [(ngModel)]="product.productPrice" />
+        <div [hidden]="!productPrice.errors?.required" class="invalid-feedback">product price is required</div>
+        <div [hidden]="!productPrice.errors?.pattern" class="invalid-feedback">product price can not be smaller/equal to
+          zero and can only contain up to 2 decimal places</div>
+
+      </div>
+      <div class="form-group">
+        <h6><small class="text-muted">Please upload only files of type .JPEG, .JPG, or .PNG</small></h6>
+        <input name="productImage" type="file" (input)='updateImg($event)' style="display:none" accept="image/*"
+          multiple="multiple" #pickedFile required />
+
+        <button type="button" (click)="pickedFile.click()" class="btn btn-dark">
+          Choose Image
+        </button>
+      </div>
+      <div class="form-group">
+        <label for="city">Select category:</label>
+        <select type="text" name="productCategory" class="form-control" id="productCategory"
+          [ngClass]="{ 'is-invalid': productCategory.errors && productCategory.touched }" ngModel
+          #productCategory="ngModel" [(ngModel)]="product.productCategory">
+          <option *ngFor="let category of categories" value="{{category._id}}">{{ category?.categoryName }}</option>
+        </select>
+        <div [hidden]="!productCategory.errors?.required" class="invalid-feedback">Product category is required</div>
+
+      </div>
+      <h6>Can't find the category you're looking for?<button class="btn" id="addCategoryBtn"
+          (click)="open(addCategory)">Add it here</button>
+      </h6>
+    </form>
+  </div>
+  <div class="modal-footer">
+
+    <button [disabled]="!addProductForm.valid" type="submit" class="btn btn-success"
+      (click)='addProduct()'>Add</button>&nbsp;
+  </div>
+</ng-template>
+
+<!-------------------------------Add Category Modal----------------------------------->
+
+<ng-template #addCategory let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">Add a new category</h5>
+    <button type="button" id="addCategoryClose" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #addCategoryForm='ngForm'>
+      <div class="form-group">
+        <input class="form-control" type="text" placeholder="Category Name" name="newCategoryName"
+          [ngClass]="{ 'is-invalid': newCategoryName.errors && newCategoryName.touched }" ngModel
+          #newCategoryName="ngModel" minlength='2' maxlength='40' [(ngModel)]="this.newCategory.categoryName" required>
+      </div>
+      <div [hidden]="!newCategoryName.errors?.required" class="invalid-feedback">Category name is required</div>
+      <div [hidden]="!newCategoryName.errors?.minlength" class="invalid-feedback"> Category has to be at least 2
+        characters long
+      </div>
+    </form>
+
+    <button type="submit" [disabled]="!addCategoryForm.valid" class="btn btn-success"
+      (click)="category()">Add</button>&nbsp;
+  </div>
+</ng-template>

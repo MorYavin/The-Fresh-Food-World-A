@@ -1,0 +1,41 @@
+#toggleCartImg{
+    height: 40px;
+    width: 40px;
+    border: 1px solid white;
+
+}
+#cartBtn:hover:after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 10%;
+    margin-left: 5px;
+    background:white;
+    font-size: small;
+
+  }
+  #cartBtn:focus {
+    outline: none;
+    border: 0;
+  }
+  #cartBtn {
+        position: relative;
+        border: none;
+        background-color: white;
+  }
+
+  #confirmationModal{
+    height: 200px;
+    width: 200px;
+    text-align: center;
+  }
+  .modal-title{
+    text-align: center;
+  }
+  #modalLogo{
+    height: 50px;
+    width: 50px;
+  }
+  .modal-footer>button{
+    margin-left: auto;
+    margin-right: auto;
+  }

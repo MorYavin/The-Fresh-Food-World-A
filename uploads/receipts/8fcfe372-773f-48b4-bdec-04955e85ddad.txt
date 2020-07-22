@@ -1,0 +1,11 @@
+Recipt for order made on 2020-07-05 for a total of 15.65 GBP
+ 
+    +------------------+--------------+--------------------+
+    |Product           |Quantity      |Total Product Price |
+    +------------------+--------------+--------------------+
+     red peppers                2             2.8
+    mango                2             10.5
+    multiseed bread                1             2.35
+   
+
+    

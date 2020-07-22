@@ -1,0 +1,55 @@
+
+#categoryBtn{
+    background-color: rgb(170,231,195);
+}
+
+
+#totalPrice,#totalPriceHeadline{
+    font-size: smaller;
+    /* float: left; */
+}
+
+.imageDiv{
+    height: 152px;
+    width: 100%;
+}
+h4{
+    color:rgb(52,58,64)
+}
+
+#openModalBtn{
+    background-color:rgb(143, 196, 165)
+}
+
+#searchBtn{
+    background-image: url("/assets/images/search.png");
+    background-repeat: no-repeat;
+    background-size: 50px,50px;
+    width: 70px;
+}
+
+#backToAllProdBtn{
+    background-color:rgb(157, 172, 163)
+
+}
+
+#thumbImg{
+    height:80px;
+    width: 80px;
+}
+
+.modal-header{
+    background-color:rgb(143, 196, 165)
+}
+#addBtn{
+    background-color:rgb(228, 197, 172);
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    
+
+}
+
+#closeBtn{
+    background-color:rgb(143, 196, 165);
+}
