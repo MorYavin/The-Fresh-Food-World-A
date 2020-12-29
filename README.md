@@ -7,7 +7,12 @@ Access to website is based on user's role:
 - Edit products
 - Add new products
 - Add a new category
+> To login as administrator use the following credentials:
 
+  Admin: 
+	moradmin123@gmail.com
+	moradmin123
+	
 ### A customer can:
 - Login or register to website
 - View last order, if available
@@ -17,11 +22,11 @@ Access to website is based on user's role:
 - Place an order.
 - Download recipt as .txt file.
 
-> To login as administrator use the following credentials:
+> To login as a costumer use the following credentials:
 
-  Admin: 
-	moradmin123@gmail.com
-	moradmin123
+  User: 
+	 taly@gmail.com 
+	 taly1234
 
 ### Server dependecies
 - npm 
